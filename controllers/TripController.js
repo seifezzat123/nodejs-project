@@ -31,11 +31,11 @@ const createTrip = (req, res) => {
   }
  
   const query = `INSERT INTO TRIP (
-  DESTINATIONNAME, LOCATION, CONTINENT, LANGUAGE, 
+  DESTINATION, LOCATION, CONTINENT, LANGUAGE, 
   DESCRIPTION, FLIGHTCOST, ACCOMMODATIONCOST, MEALCOST, VISACOST, TRANSPORTATIONCOST, CURRENCYCODE
   ) 
   VALUES ('${destinationName}','${location}','${continent}','${language}','${description}',
-  '${flightCost}','${accommodationCost}','${mealCost}','${visaCost}','${transportationCost}','${currencyCode}',)`;
+  '${flightCost}','${accommodationCost}','${mealCost}','${visaCost}','${transportationCost}','${currencyCode}')`;
 
   db.run(query, (err) => {
     if (err) {
