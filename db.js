@@ -2,7 +2,7 @@ const sqlite = require('sqlite3');
 const db = new sqlite.Database('travel.db');
 
 const createTripTable = `CREATE TABLE IF NOT EXISTS TRIP (ID INTEGER PRIMARY KEY AUTOINCREMENT,
-        DESTINATION TEXT NOT NULL,
+        DESTINATIONNAME TEXT NOT NULL,
         LOCATION TEXT NOT NULL,
         CONTINENT TEXT NOT NULL,
         LANGUAGE TEXT NOT NULL,
@@ -15,7 +15,19 @@ const createTripTable = `CREATE TABLE IF NOT EXISTS TRIP (ID INTEGER PRIMARY KEY
         CURRENCYCODE TEXT DEFAULT 'N/A'
         )`;
 
+
+// New User Table
+const createUserTable = `CREATE TABLE IF NOT EXISTS USER (
+    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+    NAME TEXT NOT NULL,
+    EMAIL TEXT UNIQUE NOT NULL,
+    ROLE TEXT NOT NULL,
+    PASSWORD TEXT NOT NULL
+)`;
+
 module.exports = {
     db,
-    createTripTable
-};        
+    createTripTable,
+    createUserTable,
+};
+

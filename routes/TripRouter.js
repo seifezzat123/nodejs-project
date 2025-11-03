@@ -1,6 +1,6 @@
 const express = require('express');
 const {
-    createTrip,
+    createTripTable,
     retrieveAllTrips,
 
 } = require('../controllers/TripController');
@@ -9,7 +9,7 @@ const tripRouter = express.Router();
 tripRouter
 .route('/')
 .get(retrieveAllTrips)
-.post(createTrip)
+.post(createTripTable)
 
 
 module.exports = tripRouter;
