@@ -31,7 +31,7 @@ const createTrip = (req, res) => {
   }
  
   const query = `INSERT INTO TRIP (
-  DESTINATION, LOCATION, CONTINENT, LANGUAGE, 
+  DESTINATIONNAME, LOCATION, CONTINENT, LANGUAGE, 
   DESCRIPTION, FLIGHTCOST, ACCOMMODATIONCOST, MEALCOST, VISACOST, TRANSPORTATIONCOST, CURRENCYCODE
   ) 
   VALUES ('${destinationName}','${location}','${continent}','${language}','${description}',
@@ -51,7 +51,7 @@ const createTrip = (req, res) => {
 
   });
 
-};
+}
 // Retrieve all trips
 const retrieveAllTrips = (req, res) => {
   db.all('SELECT * FROM TRIP', (err, rows) =>
