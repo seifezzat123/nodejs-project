@@ -4,4 +4,4 @@ const {login} = require('../controllers/authController');
 const authRouter = express.Router();
 
 authRouter.post('/login',login);
-module.export = authRouter;
+module.exports = authRouter; //was module.export istead of module.exports

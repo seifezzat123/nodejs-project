@@ -12,6 +12,8 @@ db.serialize(() => {
         if (err) console.log('Error creating user table;', err.message);
     })
 });
+
+
 app.listen(PORT,()=>{
     console.log(`server is running on port ${PORT}`);
 });

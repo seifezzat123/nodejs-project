@@ -10,7 +10,7 @@ app.use(cors());
 
 app.use(express.json());
 app.use('/api/v1/trips', TripRouter);
-app.use('auth', authRouter);
+app.use('/auth', authRouter); // was missing / before auth like this: app.use('auth', AuthRouter); 
 // app.use('/api/v1/user', UserRouter);
 
 module.exports= {app}
