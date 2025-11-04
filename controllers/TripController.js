@@ -67,37 +67,6 @@ const retrieveAllTrips = (req, res) => {
 
 
 
-
-  /*const newTrip = {
-    id: trips.length + 1,
-    destinationName,
-    location,
-    continent,
-    language,
-    description,
-    flightCost: flightCost || 0,
-    accommodationCost: accommodationCost || 0,
-    mealCost: mealCost || 0,
-    visaCost: visaCost || 0,
-    transportationCost: transportationCost || 0,
-    currencyCode: currencyCode || 'N/A',
-    dailyCost:
-      (flightCost || 0) +
-      (accommodationCost || 0) +
-      (mealCost || 0) +
-      (visaCost || 0) +
-      (transportationCost || 0),
-  };
- 
-  trips.push(newTrip);
- 
-  res.status(201).json({
-    status: 'success',
-    message: 'Trip created successfully',
-    data: newTrip,
-  });*/
-
-
 module.exports = {
   createTripTable,
   retrieveAllTrips,

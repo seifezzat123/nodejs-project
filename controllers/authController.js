@@ -8,49 +8,61 @@ const signToken = (id, role) => {
     });
 };
 
-const Signup = (req, res) => {
-    const name = req.body.name
-    const email = req.body.email;
-    const password = req.body.password;
 
-    if (!name || !email || !password) {
-        return res.status(400).send('Please provide name and email and password.');
+const signup = (req, res) => {
+  const email = req.body.email;
+  const password = req.body.password;
+  const role =  'user';
+
+  if (!email || !password) {
+    return res.status(400).send('Please provide email and password.');
+  }
+
+  console.log("Signup attempt:", email);
+
+  // check existing user
+  const checkQuery = `SELECT * FROM USER WHERE EMAIL='${email}'`;
+  db.get(checkQuery, (err, row) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).send('Database error');
     }
 
-    console.log("Login attempt:", email, password);
-    const query = `SELECT * FROM USER WHERE EMAIL='${email}'`;
+    if (row) {
+      return res.status(409).send('User already exists.');
+    }
 
-    db.get(query, (err, row) => {
+    // hash password
+    bcrypt.hash(password, 10, (err, hashedPassword) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).send('Error hashing password.');
+      }
+
+      const insertQuery = `INSERT INTO USER (EMAIL, PASSWORD, ROLE) VALUES ('${email}', '${hashedPassword}', '${role}')`;
+      db.run(insertQuery, function (err) {
         if (err) {
-            console.log(err);
-            return res.status(500).send('Database error');
+          console.error(err);
+          return res.status(500).send('Error creating user.');
         }
 
-        // Compare the hashed password
-        bcrypt.compare(password, row.PASSWORD, (err, isMatch) => {
-            if (err) {
-                console.error(err);
-                return res.status(500).send('Error verifying password.');
-            }
+        const newUserId = this.lastID;
+        const token = signToken(newUserId, role);
 
-            if (!isMatch) {
-                return res.status(401).send('Invalid credentials.');
-            }
-
-            // Generate JWT token for successful login
-            const token = signToken(row.ID, row.ROLE);
-            return res.status(200).json({
-                message: 'Login successful',
-                token,
-                user: {
-                    id: row.ID,
-                    email: row.EMAIL,
-                    role: row.ROLE
-                }
-            });
+        return res.status(201).json({
+          message: 'User registered successfully',
+          token,
+          user: {
+            id: newUserId,
+            email,
+            role
+          }
         });
+      });
     });
+  });
 };
+
 
 const login = (req, res) => {
     const email = req.body.email;
@@ -115,6 +127,6 @@ const verifyToken = (req, res, next) => {
 };
 
 module.exports = { login,
-    Signup,
+    signup,
     verifyToken,
  };
