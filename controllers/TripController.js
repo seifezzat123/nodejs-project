@@ -34,8 +34,16 @@ const createTripTable = (req, res) => {
   DESTINATIONNAME, LOCATION, CONTINENT, LANGUAGE, 
   DESCRIPTION, FLIGHTCOST, ACCOMMODATIONCOST, MEALCOST, VISACOST, TRANSPORTATIONCOST, CURRENCYCODE
   ) 
-  VALUES ('${destinationName}','${location}','${continent}','${language}','${description}',
-  '${flightCost}','${accommodationCost}','${mealCost}','${visaCost}','${transportationCost}','${currencyCode}')`;
+  VALUES (?,?,?,?,?,?,?,?,?,?,?)`;
+
+
+  const params = [destinationName, location, continent, language, description, flightCost, accommodationCost, mealCost,
+    visaCost, transportationCost, currencyCode
+  ];
+  res.cookie('TripCreated', destinationName,{
+    maxAge: 15*60*1000,
+    httpOnly: true
+  });
 
   db.run(query, (err) => {
     if (err) {
@@ -65,9 +73,34 @@ const retrieveAllTrips = (req, res) => {
   })
 }; 
 
+const retrieveTripById = (req, res) => {
+  const id = req.params.id;
+  const query = `SELECT * FROM TRIP WHERE ID = ?`;
+
+  res.cookie('TripViewed', `Trip ID ${id}`,{
+    maxAge: 15*60*1000,
+    httpOnly: true
+  });
+  db.get(query,{id} ,(err) => {
+    if (err) {
+      console.log(err);
+      return res.status(500).json({
+        message: 'error fetching trip',
+        error : err.message
+      });
+    }
+    if (!row) return res.status(404).json({message: 'Trip not found'});
+    return res.status(201).json({
+      message:'trip retrieved successfully',
+      data: row
+    });
+
+  });
+}
 
 
 module.exports = {
   createTripTable,
   retrieveAllTrips,
+  retrieveTripById
 };

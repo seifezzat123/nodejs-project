@@ -1,17 +1,24 @@
 const express = require('express');
 const {
-    createTripTable,
-    retrieveAllTrips,
+  createTrip,
+  retrieveAllTrips,
+  retrieveTripById,
+} = require('../controllers/TripController.js');
 
-} = require('../controllers/TripController');
-const { verifyToken } = require('../controllers/authController');
+const { verifyToken, verifyAdmin } = require('../controllers/authController.js'); // import it
+
 const tripRouter = express.Router();
 
-tripRouter.use(verifyToken)
-.route('/')
-.get(retrieveAllTrips)
-.post(createTripTable)
+// All trips
+tripRouter
+  .route('/')
+  .post(verifyAdmin, createTrip)        // Add new trip
+  .get(verifyToken, retrieveAllTrips);  // Get all trips for authenticated users
+
+
+tripRouter
+  .route('/:id')
+  .get(retrieveTripById)
 
 
 module.exports = tripRouter;
-
