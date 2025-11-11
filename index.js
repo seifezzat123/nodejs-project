@@ -11,7 +11,7 @@ const userRouter = require('./routes/UserRouter.js')
 dotenv.config();
 app.use(cors());
 
-const cookieParser = require('cookie.parser')
+const cookieParser = require('cookie-parser')
 app.use(cookieParser());
 
 app.use(express.json());

@@ -2,7 +2,7 @@ const db_access = require('../db.js');
 const db= db_access.db;
  
 
-const createTripTable = (req, res) => {
+const createTrip = (req, res) => {
   const {
     destinationName,
     location,
@@ -100,7 +100,7 @@ const retrieveTripById = (req, res) => {
 
 
 module.exports = {
-  createTripTable,
+  createTrip,
   retrieveAllTrips,
   retrieveTripById
 };
